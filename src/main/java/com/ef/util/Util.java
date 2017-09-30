@@ -43,7 +43,7 @@ public class Util {
 			bufferReader = new BufferedReader(new FileReader(logPath));
 			while((log = bufferReader.readLine()) != null) {
 				String[] splitLog = log.split("\\|");
-				logIps.add(new LogIp(splitLog[0], getDateFormat().parse(splitLog[1])));
+				logIps.add(new LogIp(splitLog[0].trim(), getDateFormat().parse(splitLog[1].trim())));
 			}
 		} catch(IOException e) {
 			//this should be a Logger

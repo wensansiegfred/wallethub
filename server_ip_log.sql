@@ -18,14 +18,14 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
-DROP DATABASE IF EXISTS wallethub;
+DROP DATABASE IF EXISTS server_ip_log;
 
-CREATE DATABASE wallethub;
+CREATE DATABASE server_ip_log;
 
-use wallethub;
+use server_ip_log;
 
 --
--- Database: `wallethub`
+-- Database: `server_ip_log`
 --
 
 -- --------------------------------------------------------
