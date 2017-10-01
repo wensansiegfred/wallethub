@@ -11,13 +11,13 @@ import java.util.List;
 import com.ef.model.LogIp;
 import com.ef.util.DB;
 
-public class Dao extends DB {	
-	private PreparedStatement pre = null;	
-	
+public class Dao extends DB {
+	private PreparedStatement pre = null;
+
 	public Dao() {
 		super();
 	}
-	
+
 	public void insertLog(String sql, List<LogIp> logIps) {
 		pre = getPrep(sql);
 		setAutocommit(false);
@@ -26,10 +26,10 @@ public class Dao extends DB {
 				pre.setString(1, logIp.getIpAddress());
 				pre.setTimestamp(2, new Timestamp(logIp.getLogTime().getTime()));
 				pre.setString(3, logIp.getIpAddress());
-				pre.setTimestamp(4, new Timestamp(logIp.getLogTime().getTime()));				
+				pre.setTimestamp(4, new Timestamp(logIp.getLogTime().getTime()));
 				pre.addBatch();
 			}
-			
+
 			pre.executeBatch();
 			commit();
 		} catch (SQLException e) {
@@ -37,7 +37,7 @@ public class Dao extends DB {
 			throw new RuntimeException("An error encountered.", e);
 		}
 	}
-	
+
 	public void insertBlockedIp(String sql, List<String> ips, String comment) {
 		pre = getPrep(sql);
 		setAutocommit(false);
@@ -47,7 +47,7 @@ public class Dao extends DB {
 				pre.setString(2,  comment);
 				pre.addBatch();
 			}
-			
+
 			pre.executeBatch();
 			commit();
 		} catch (SQLException e) {
@@ -55,7 +55,7 @@ public class Dao extends DB {
 			throw new RuntimeException("An error occurred, cannot insert sql query." + sql);
 		}
 	}
-	
+
 	public List<String> getIpByThreshold(String sql, Date startDate, Date stopDate, int occurence) {
 		pre = getPrep(sql);
 		try {
@@ -63,17 +63,33 @@ public class Dao extends DB {
 			pre.setTimestamp(2, new Timestamp(stopDate.getTime()));
 			pre.setInt(3, occurence);
 			ResultSet rs = pre.executeQuery();
-			List<String> ips = new ArrayList<String>();			
+			List<String> ips = new ArrayList<String>();
 			while (rs.next()) {
 				ips.add(rs.getString("ip_address"));
 			}
-			
+
 			return ips;
-		} catch (Exception e) {			
+		} catch (Exception e) {
 			throw new RuntimeException("An error encountered.", e);
 		}
 	}
-	
+
+	public List<LogIp> getLogById(String sql, String ip) {
+		pre = getPrep(sql);
+		try {
+			pre.setString(1, ip);
+			ResultSet rs = pre.executeQuery();
+			List<LogIp> ips = new ArrayList<LogIp>();
+			while (rs.next()) {
+				ips.add(new LogIp(rs.getString("ip_address"), rs.getDate("log_time")));
+			}
+
+			return ips;
+		} catch (Exception e) {
+			throw new RuntimeException("An error encountered.", e);
+		}
+	}
+
 	public void closeAll() {
 		close();
 	}
