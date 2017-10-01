@@ -24,3 +24,13 @@ Ex: Write SQL to find IPs that made more than 100 requests starting from 2017-01
 SQL ans:
 1.) SELECT count(*) as count, ip_address FROM server_log WHERE log_time BETWEEN '2017-01-01.13:00:00' AND '2017-01-01.14:00:00' GROUP BY ip_address HAVING count >= number_of_request
 2.) SELECT * FROM server_log WHERE ip_address = {ip_address_value} ORDER_BY log_time ASC
+
+READ ME:
+- Project is in maven.
+- Config settings are in config.properties file
+- Database name is server_ip_log, the dump includes dropping the schema & recreate.
+- Sample log file for testing is webserver_logs.txt (file name is set in Config file)
+- To build, run cli: mvn clean package assembly:single -> to include the dependencies e.g mysql connector
+- The resulting jar are:
+  - wallethub.jar -> no dependencies
+  - wallethub-jar-with-dependencies -> with dependencies => this is what i use for testing
